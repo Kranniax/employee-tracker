@@ -24,7 +24,12 @@ async function viewDepartments() {
 async function viewRoles() {
   // A simple SELECT query
   try {
-    const [results] = await db.query(`SELECT * FROM role`);
+    const [results] =
+      await db.query(`SELECT role.id, role.title, role.salary, department.name AS department_name
+                                      FROM role
+                                      LEFT JOIN department 
+                                      ON role.department_id = department.id;
+                                      `);
     console.table(results); // results contains rows returned by server
   } catch (err) {
     console.log(err);
@@ -34,7 +39,20 @@ async function viewRoles() {
 async function viewEmployees() {
   // A simple SELECT query
   try {
-    const [results] = await db.query(`SELECT * FROM employee`);
+    const [results] = await db.query(`SELECT 
+                                        employee.id, 
+                                        employee.first_name, 
+                                        employee.last_name,
+                                        role.title AS job_title, 
+                                        department.name AS department,
+                                        role.salary,
+                                        employee.manager_id
+                                        FROM employee
+                                        LEFT JOIN role on employee.role_id = role.id
+                                        JOIN department on role.department_id = department.id
+                                        
+                                        
+                                        `);
     console.table(results); // results contains rows returned by server
   } catch (err) {
     console.log(err);
@@ -63,6 +81,7 @@ var init = () => {
       {
         type: "list",
         name: "option",
+        message: "What would you like to do?",
         choices: [
           "view all departments",
           "view all roles",
