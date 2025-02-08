@@ -21,15 +21,15 @@ async function viewDepartments() {
   }
 }
 
-// async function viewRoles() {
-//   // A simple SELECT query
-//   try {
-//     const [results] = await db.query(`SELECT * FROM role`);
-//     console.table(results); // results contains rows returned by server
-//   } catch (err) {
-//     console.log(err);
-//   }
-// }
+async function viewRoles() {
+  // A simple SELECT query
+  try {
+    const [results] = await db.query(`SELECT * FROM role`);
+    console.table(results); // results contains rows returned by server
+  } catch (err) {
+    console.log(err);
+  }
+}
 
 // async function viewEmployees() {
 //   // A simple SELECT query
@@ -46,9 +46,9 @@ var selectedOption = function ({ option }) {
     case "view all departments":
       viewDepartments();
       break;
-    // case "view all roles":
-    //   viewRoles();
-    //   break;
+    case "view all roles":
+      viewRoles();
+      break;
     // case "view all employees":
     //   viewEmployees();
       break;
