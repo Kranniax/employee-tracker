@@ -10,16 +10,16 @@ const db = await mysql.createConnection({
   password: "@Pizza231996",
   database: "employee_tracker",
 });
-// View all departments query.
-// async function viewDepartments() {
-//   // A simple SELECT query
-//   try {
-//     const [results] = await db.query(`SELECT * FROM department`);
-//     console.table(results); // results contains rows returned by server
-//   } catch (err) {
-//     console.log(err);
-//   }
-// }
+//View all departments query.
+async function viewDepartments() {
+  // A simple SELECT query
+  try {
+    const [results] = await db.query(`SELECT * FROM department`);
+    console.table(results); // results contains rows returned by server
+  } catch (err) {
+    console.log(err);
+  }
+}
 
 // async function viewRoles() {
 //   // A simple SELECT query
@@ -43,8 +43,8 @@ const db = await mysql.createConnection({
 
 var selectedOption = function ({ option }) {
   switch (option) {
-    // case "view all departments":
-    //   viewDepartments();
+    case "view all departments":
+      viewDepartments();
       break;
     // case "view all roles":
     //   viewRoles();
