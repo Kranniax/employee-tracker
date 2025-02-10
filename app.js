@@ -35,7 +35,7 @@ async function viewRoles() {
     console.log(err);
   }
 }
-
+// view all employees 
 async function viewEmployees() {
   // A simple SELECT query
   try {
@@ -57,47 +57,44 @@ async function viewEmployees() {
     console.log(err);
   }
 }
+// Add a new department to database
+async function addDepartment() {
+  const department = await inquirer.prompt([
+    {
+      type: "input",
+      name: "department",
+      message: "Please enter a new department",
+    },
+  ]);
 
-// function addDepartment() {
-//   inquirer
-//     .prompt([
-//       {
-//         type: "input",
-//         name: "department",
-//         message: "Please enter a new deparment",
-//       },
-//     ])
-//     .then((department) => {
+  try {
+    const sql = `INSERT INTO department (name) VALUES (?)`;
+    const params = [department.department];
+    await db.query(sql, params);
+    console.log(`${department.department} has been added to the database.`);
+  } catch (err) {
+    console.error(err);
+  }
+}
 
-//       const sql = `INSERT INTO department (name) VALUES (?)`;
-//       const params = [department.department];
-//       db.query(sql, params, (err, result) => {
-//         if (err) throw err;
-//         console.log(
-//           `${department.department} has beed added to the department table database.`
-//         );
-//       });
-//     });
-// }
-
-var selectedOption = function ({ option }) {
+const selectedOption = async function ({ option }) {
   switch (option) {
     case "view all departments":
-      viewDepartments();
+      await viewDepartments();
       break;
     case "view all roles":
-      viewRoles();
+      await viewRoles();
       break;
     case "view all employees":
-      viewEmployees();
+      await viewEmployees();
       break;
-    // case "add a department":
-    //   addDepartment();
-    //   break;
-
+    case "add a department":
+      await addDepartment();
+      break;
     default:
       break;
   }
+  init();
 };
 
 var init = () => {
