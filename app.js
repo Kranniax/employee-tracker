@@ -46,18 +46,39 @@ async function viewEmployees() {
                                         role.title AS job_title, 
                                         department.name AS department,
                                         role.salary,
-                                        employee.manager_id
+                                        CONCAT(m.first_name , ' ', m.last_name) AS manager 
                                         FROM employee
                                         LEFT JOIN role on employee.role_id = role.id
-                                        JOIN department on role.department_id = department.id
-                                        
-                                        
+                                        LEFT JOIN department on role.department_id = department.id
+                                        LEFT JOIN employee m on employee.manager_id = m.id
                                         `);
     console.table(results); // results contains rows returned by server
   } catch (err) {
     console.log(err);
   }
 }
+
+// function addDepartment() {
+//   inquirer
+//     .prompt([
+//       {
+//         type: "input",
+//         name: "department",
+//         message: "Please enter a new deparment",
+//       },
+//     ])
+//     .then((department) => {
+
+//       const sql = `INSERT INTO department (name) VALUES (?)`;
+//       const params = [department.department];
+//       db.query(sql, params, (err, result) => {
+//         if (err) throw err;
+//         console.log(
+//           `${department.department} has beed added to the department table database.`
+//         );
+//       });
+//     });
+// }
 
 var selectedOption = function ({ option }) {
   switch (option) {
@@ -70,6 +91,10 @@ var selectedOption = function ({ option }) {
     case "view all employees":
       viewEmployees();
       break;
+    // case "add a department":
+    //   addDepartment();
+    //   break;
+
     default:
       break;
   }
