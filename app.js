@@ -35,7 +35,7 @@ async function viewRoles() {
     console.log(err);
   }
 }
-// view all employees 
+// view all employees
 async function viewEmployees() {
   // A simple SELECT query
   try {
@@ -76,6 +76,35 @@ async function addDepartment() {
     console.error(err);
   }
 }
+// Add a role
+// async function addRole() {
+//   const role = await inquirer.prompt([
+//     {
+//       type: "input",
+//       name: "role",
+//       message: "Please enter a new role name",
+//     },
+//     {
+//       type: "input",
+//       name: "salary",
+//       message: "Please enter a new role salary",
+//     },
+//     {
+//       type: "input",
+//       name: "department",
+//       message: "Please enter a new role department",
+//     },
+//   ]);
+
+//   try {
+//     const sql = `INSERT INTO role (title, salary, ) VALUES (?)`;
+//     const params = [role.role];
+//     await db.query(sql, params);
+//     console.log(`${role.role} has been added to the database.`);
+//   } catch (err) {
+//     console.error(err);
+//   }
+// }
 
 const selectedOption = async function ({ option }) {
   switch (option) {
@@ -90,6 +119,9 @@ const selectedOption = async function ({ option }) {
       break;
     case "add a department":
       await addDepartment();
+      break;
+    case "add a role":
+      await addRole();
       break;
     default:
       break;
