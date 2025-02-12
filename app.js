@@ -172,7 +172,7 @@ async function addEmployee() {
 
     await db.query(sql, params);
     console.log(
-      `Added ${employee.first_name} ${employee.last_name} to the database.`
+      `Added ${employee.first_name}${employee.last_name} to the database.`
     );
   } catch (error) {
     console.log(error);
@@ -198,6 +198,9 @@ const selectedOption = async function ({ option }) {
     case "add an employee":
       await addEmployee();
       break;
+    case "update an employee role":
+        await updateEmployeeRole()
+        break;
     default:
       break;
   }
