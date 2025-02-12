@@ -120,6 +120,64 @@ async function addRole() {
     console.log(error);
   }
 }
+
+async function addEmployee() {
+  const [roles] = await db.query(`SELECT id, title FROM role`);
+  const [managers] = await db.query(
+    `SELECT id, CONCAT(first_name , ' ', last_name) AS manager_name FROM employee`
+  );
+
+  // console.log(roles);
+  // console.log(managers);
+
+  const employee = await inquirer.prompt([
+    {
+      type: "input",
+      name: "first_name",
+      message: "Please enter the employee's first name",
+    },
+    {
+      type: "input",
+      name: "last_name",
+      message: "Please enter the employee's last name.",
+    },
+    {
+      type: "list",
+      name: "role",
+      message: "Choose the role for this employee",
+      choices: roles.map((role) => ({
+        name: role.title,
+        value: role.id,
+      })),
+    },
+    {
+      type: "list",
+      name: "manager",
+      message: "Choose the manager for this employee",
+      choices: managers.map((manager) => ({
+        name: manager.manager_name,
+        value: manager.id,
+      })),
+    },
+  ]);
+  try {
+    const sql = `INSERT INTO employee (first_name, last_name, role_id, manager_id) 
+                 VALUES (?,?,?,?)`;
+    const params = [
+      employee.first_name,
+      employee.last_name,
+      employee.role,
+      employee.manager,
+    ];
+
+    await db.query(sql, params);
+    console.log(
+      `Added ${employee.first_name} ${employee.last_name} to the database.`
+    );
+  } catch (error) {
+    console.log(error);
+  }
+}
 // The selected option will trigger the different functions/queries.
 const selectedOption = async function ({ option }) {
   switch (option) {
@@ -137,6 +195,8 @@ const selectedOption = async function ({ option }) {
       break;
     case "add a role":
       await addRole();
+    case "add an employee":
+      await addEmployee();
       break;
     default:
       break;
