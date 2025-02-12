@@ -57,7 +57,7 @@ async function viewEmployees() {
     console.log(err);
   }
 }
-// Add a new department to database
+// Add a new department to the database
 async function addDepartment() {
   const department = await inquirer.prompt([
     {
@@ -77,35 +77,50 @@ async function addDepartment() {
   }
 }
 // Add a role
-// async function addRole() {
-//   const role = await inquirer.prompt([
-//     {
-//       type: "input",
-//       name: "role",
-//       message: "Please enter a new role name",
-//     },
-//     {
-//       type: "input",
-//       name: "salary",
-//       message: "Please enter a new role salary",
-//     },
-//     {
-//       type: "input",
-//       name: "department",
-//       message: "Please enter a new role department",
-//     },
-//   ]);
+async function addRole() {
+  try {
+    // Get list of departments.
+    const [departments] = await db.query(`SELECT id, name FROM department`);
+    // console.log(departments);
 
-//   try {
-//     const sql = `INSERT INTO role (title, salary, ) VALUES (?)`;
-//     const params = [role.role];
-//     await db.query(sql, params);
-//     console.log(`${role.role} has been added to the database.`);
-//   } catch (err) {
-//     console.error(err);
-//   }
-// }
+    // Prompt user for role details.
+    const role = await inquirer.prompt([
+      {
+        type: "input",
+        name: "role",
+        message: "Please enter the new role's name",
+      },
+      {
+        type: "input",
+        name: "salary",
+        message: "Please enter the new role's salary",
+        validate: (input) => {
+          if (isNaN(input)) {
+            return "Please enter a valid number";
+          }
+          return true;
+        },
+      },
+      {
+        type: "list",
+        name: "department",
+        message: "Choose the department for this role",
+        choices: departments.map((dept) => ({
+          name: dept.name,
+          value: dept.id,
+        })),
+      },
+    ]);
+    const sql = `INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)`;
+    const params = [role.role, role.salary, role.department];
 
+    await db.query(sql, params);
+    console.log(`Added ${role.role} role to the database`);
+  } catch (error) {
+    console.log(error);
+  }
+}
+// The selected option will trigger the different functions/queries.
 const selectedOption = async function ({ option }) {
   switch (option) {
     case "view all departments":
@@ -128,10 +143,10 @@ const selectedOption = async function ({ option }) {
   }
   init();
 };
-
-var init = () => {
-  inquirer
-    .prompt([
+// User prompts from the CLI.
+var init = async () => {
+  try {
+    const option = await inquirer.prompt([
       {
         type: "list",
         name: "option",
@@ -146,10 +161,11 @@ var init = () => {
           "update an employee role",
         ],
       },
-    ])
-    .then((option) => {
-      selectedOption(option);
-    });
+    ]);
+    await selectedOption(option);
+  } catch (err) {
+    console.error("An error occurred:", err);
+  }
 };
 
 init();
