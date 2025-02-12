@@ -124,7 +124,7 @@ async function addRole() {
 async function addEmployee() {
   const [roles] = await db.query(`SELECT id, title FROM role`);
   const [managers] = await db.query(
-    `SELECT id, CONCAT(first_name , ' ', last_name) AS manager_name FROM employee`
+    `SELECT id, CONCAT(first_name, ' ',last_name) AS manager_name FROM employee`
   );
 
   // console.log(roles);
@@ -178,6 +178,36 @@ async function addEmployee() {
     console.log(error);
   }
 }
+
+async function updateEmployeeRole() {
+  const [employees] = await db.query(
+    `SELECT id, CONCAT(first_name , ' ', last_name) AS employee FROM employee`
+  );
+  const [roles] = await db.query(`SELECT id, title FROM role`);
+
+  const updatedEmployee = await inquirer.prompt([
+    {
+      type: "list",
+      name: "employee",
+      message: "Select an employee you would like to update their new role",
+      choices: employees.map((employee) => ({
+        name: employee.employee,
+        value: employee.id,
+      })),
+    },
+    {
+      type: "list",
+      name: "role",
+      message: "Select a role you would like to update for an employee",
+      choices: roles.map((role) => ({
+        name: role.title,
+        value: role.id,
+      })),
+    },
+  ]);
+  console.log(updatedEmployee);
+  
+}
 // The selected option will trigger the different functions/queries.
 const selectedOption = async function ({ option }) {
   switch (option) {
@@ -199,8 +229,8 @@ const selectedOption = async function ({ option }) {
       await addEmployee();
       break;
     case "update an employee role":
-        await updateEmployeeRole()
-        break;
+      await updateEmployeeRole();
+      break;
     default:
       break;
   }
