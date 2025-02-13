@@ -10,7 +10,7 @@ const db = await mysql.createConnection({
   password: "@Pizza231996",
   database: "employee_tracker",
 });
-//View all departments query.
+//View all departments.
 async function viewDepartments() {
   // A simple SELECT query
   try {
@@ -20,7 +20,7 @@ async function viewDepartments() {
     console.log(err);
   }
 }
-
+// View all roles.
 async function viewRoles() {
   // A simple SELECT query
   try {
@@ -57,7 +57,7 @@ async function viewEmployees() {
     console.log(err);
   }
 }
-// Add a new department to the database
+// Add a new department.
 async function addDepartment() {
   const department = await inquirer.prompt([
     {
@@ -81,7 +81,6 @@ async function addRole() {
   try {
     // Get list of departments.
     const [departments] = await db.query(`SELECT id, name FROM department`);
-    // console.log(departments);
 
     // Prompt user for role details.
     const role = await inquirer.prompt([
@@ -122,13 +121,11 @@ async function addRole() {
 }
 
 async function addEmployee() {
+  // Get a list of roles and managers.
   const [roles] = await db.query(`SELECT id, title FROM role`);
   const [managers] = await db.query(
     `SELECT id, CONCAT(first_name, ' ',last_name) AS manager_name FROM employee`
   );
-
-  // console.log(roles);
-  // console.log(managers);
 
   const employee = await inquirer.prompt([
     {
@@ -178,7 +175,7 @@ async function addEmployee() {
     console.log(error);
   }
 }
-
+// Update an employee's role. 
 async function updateEmployeeRole() {
   const [employees] = await db.query(
     `SELECT id, CONCAT(first_name , ' ', last_name) AS employee FROM employee`
@@ -189,7 +186,7 @@ async function updateEmployeeRole() {
     {
       type: "list",
       name: "employee",
-      message: "Select an employee you would like to update their new role",
+      message: "Select an employee to update their role",
       choices: employees.map((employee) => ({
         name: employee.employee,
         value: employee.id,
@@ -198,15 +195,22 @@ async function updateEmployeeRole() {
     {
       type: "list",
       name: "role",
-      message: "Select a role you would like to update for an employee",
+      message: "Select an updated role for this employee",
       choices: roles.map((role) => ({
         name: role.title,
         value: role.id,
       })),
     },
   ]);
-  console.log(updatedEmployee);
-  
+  try {
+    const sql = `UPDATE employee
+                 SET employee.role_id=?
+                 WHERE employee.id = ? `;
+    const params = [updatedEmployee.role, updatedEmployee.employee];
+    await db.query(sql, params);
+  } catch (error) {
+    console.log(error);
+  }
 }
 // The selected option will trigger the different functions/queries.
 const selectedOption = async function ({ option }) {
