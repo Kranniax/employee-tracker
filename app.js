@@ -27,6 +27,9 @@ const selectedOption = async function ({ option }) {
     case "update an employee role":
       await employee.updateEmployeeRole();
       break;
+    case "update an employee manager":
+      await employee.updateEmployeeManager();
+      break;
     case "exit":
       console.log("Goodbye!");
       process.exit(0);
@@ -51,6 +54,7 @@ var init = async () => {
           "add a role",
           "add an employee",
           "update an employee role",
+          "update an employee manager",
           "exit",
         ],
       },
