@@ -33,6 +33,9 @@ const selectedOption = async function ({ option }) {
     case "view all employees by manager":
       await employee.viewEmployeesByManager();
       break;
+    case "view all employees by department":
+      await employee.viewEmployeesByDepartment();
+      break;
     case "exit":
       console.log("Goodbye!");
       process.exit(0);
@@ -59,6 +62,7 @@ var init = async () => {
           "update an employee role",
           "update an employee manager",
           "view all employees by manager",
+          "view all employees by department",
           "exit",
         ],
       },
