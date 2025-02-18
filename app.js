@@ -36,6 +36,18 @@ const selectedOption = async function ({ option }) {
     case "view all employees by department":
       await employee.viewEmployeesByDepartment();
       break;
+    case "Delete department":
+      await employee.deleteDepartment();
+      break;
+    // case "Delete a role":
+    //   await employee.deleteRole();
+    //   break;
+    // case "Delete a employee":
+    //   await employee.deleteEmployee();
+    //   break;
+    // case "View the total utilized budget of a department":
+    //   await employee.utilizedBudget();
+    //   break;
     case "exit":
       console.log("Goodbye!");
       process.exit(0);
