@@ -45,9 +45,9 @@ const selectedOption = async function ({ option }) {
     case "Delete a employee":
       await employee.deleteEmployee();
       break;
-    // case "View the total utilized budget of a department":
-    //   await employee.utilizedBudget();
-    //   break;
+    case "View the total utilized budget of a department":
+      await employee.utilizedDepartmentBudget();
+      break;
     case "exit":
       console.log("Goodbye!");
       process.exit(0);
@@ -78,6 +78,7 @@ var init = async () => {
           "Delete a department",
           "Delete a role",
           "Delete a employee",
+          "View the total utilized budget of a department",
           "exit",
         ],
       },
