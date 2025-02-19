@@ -5,6 +5,7 @@ VALUES
 ('Finance'),
 ('Legal'),
 ('Human Resources'),
+
 ('Marketing');
 
 -- Role seed data
