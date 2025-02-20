@@ -16,8 +16,10 @@
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.1",
+    "chalk": "^4.1.2",
     "console.table": "^0.10.0",
     "dotenv": "^16.4.7",
+    "figlet": "^1.8.0",
     "inquirer": "^12.4.1",
     "mysql2": "^3.12.0"
   },

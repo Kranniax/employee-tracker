@@ -1,8 +1,29 @@
 import inquirer from "inquirer";
+import chalk from "chalk";
+import figlet from "figlet";
 import { EmployeeQueries } from "./lib/queries.js";
 import cTable from "console.table";
 
 const employee = new EmployeeQueries();
+
+function displayBanner() {
+  console.log(
+    "\n" +
+      chalk.green(
+        figlet.textSync("Employee", {
+          font: "Standard",
+          horizontalLayout: "full",
+        })
+      ) +
+      chalk.green(
+        figlet.textSync("Tracker", {
+          font: "Standard",
+          horizontalLayout: "full",
+        })
+      ) +
+      "\n"
+  );
+}
 
 // The selected option will trigger the different functions/queries.
 const selectedOption = async function ({ option }) {
@@ -21,6 +42,7 @@ const selectedOption = async function ({ option }) {
       break;
     case "add a role":
       await employee.addRole();
+      break;
     case "add an employee":
       await employee.addEmployee();
       break;
@@ -89,4 +111,6 @@ var init = async () => {
   }
 };
 
+// Usage:
+displayBanner();
 init();
